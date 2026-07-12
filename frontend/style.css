@@ -1,0 +1,789 @@
+/* ==========================
+   GOOGLE FONT
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* ==========================
+   BODY
+========================== */
+
+body{
+
+    min-height:100vh;
+
+    background:linear-gradient(
+        135deg,
+        #08111f,
+        #111827,
+        #1e1b4b
+    );
+
+    overflow-x:hidden;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+}
+
+/* ==========================
+   ANIMATED BACKGROUND
+========================== */
+
+.bg-circle{
+
+    position:fixed;
+
+    border-radius:50%;
+
+    filter:blur(120px);
+
+    opacity:.35;
+
+    z-index:-1;
+
+    animation:float 10s ease-in-out infinite;
+}
+
+.one{
+
+    width:350px;
+
+    height:350px;
+
+    background:#7C3AED;
+
+    top:-80px;
+
+    left:-60px;
+}
+
+.two{
+
+    width:300px;
+
+    height:300px;
+
+    background:#2563EB;
+
+    bottom:-80px;
+
+    right:-50px;
+
+    animation-delay:3s;
+}
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0px);
+    }
+
+    50%{
+
+        transform:translateY(40px);
+    }
+
+    100%{
+
+        transform:translateY(0px);
+    }
+
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.container{
+
+    width:100%;
+
+    max-width:1400px;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+header{
+
+    text-align:center;
+
+    margin-bottom:40px;
+}
+
+header h1{
+
+    font-size:3rem;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:10px;
+}
+
+header p{
+
+    color:#cbd5e1;
+
+    font-size:1rem;
+}
+
+/* ==========================
+   MAIN GRID
+========================== */
+
+main{
+
+    display:grid;
+
+    grid-template-columns:1fr 1.3fr;
+
+    gap:30px;
+}
+
+/* ==========================
+   GLASS CARDS
+========================== */
+
+.input-card,
+.output-card{
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    backdrop-filter:blur(25px);
+
+    border-radius:25px;
+
+    padding:30px;
+
+    box-shadow:
+
+        0 8px 32px rgba(0,0,0,.35);
+
+    transition:.35s;
+}
+
+.input-card:hover,
+.output-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+
+        0 20px 40px rgba(0,0,0,.45);
+}
+
+.input-card h2,
+.output-card h2{
+
+    margin-bottom:25px;
+
+    font-size:1.4rem;
+}
+
+/* ==========================
+   FORM LABELS
+========================== */
+
+label{
+
+    display:block;
+
+    margin-top:22px;
+
+    margin-bottom:10px;
+
+    font-size:.95rem;
+
+    font-weight:500;
+
+    color:#dbeafe;
+
+}
+
+/* ==========================
+   INPUTS
+========================== */
+
+select,
+textarea{
+
+    width:100%;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    color:white;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+/* Placeholder */
+
+textarea::placeholder{
+
+    color:#94a3b8;
+
+}
+
+/* Dropdown options */
+
+select{
+
+    cursor:pointer;
+
+}
+
+select option{
+
+    background:#111827;
+
+    color:white;
+
+}
+
+/* Focus Effect */
+
+select:focus,
+textarea:focus{
+
+    border-color:#7C3AED;
+
+    box-shadow:
+
+        0 0 20px rgba(124,58,237,.45);
+
+}
+
+/* Disable textarea resize */
+
+textarea{
+
+    resize:none;
+
+    line-height:1.7;
+
+}
+
+/* ==========================
+   WORD COUNT
+========================== */
+
+label span{
+
+    float:right;
+
+    color:#60a5fa;
+
+    font-weight:600;
+
+}
+
+/* ==========================
+   RANGE SLIDER
+========================== */
+
+input[type="range"]{
+
+    width:100%;
+
+    margin-top:15px;
+
+    appearance:none;
+
+    height:8px;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.15);
+
+    outline:none;
+
+}
+
+/* Chrome */
+
+input[type="range"]::-webkit-slider-thumb{
+
+    appearance:none;
+
+    width:22px;
+
+    height:22px;
+
+    border-radius:50%;
+
+    background:#7C3AED;
+
+    cursor:pointer;
+
+    border:3px solid white;
+
+    transition:.3s;
+
+}
+
+input[type="range"]::-webkit-slider-thumb:hover{
+
+    transform:scale(1.15);
+
+    box-shadow:
+
+        0 0 18px rgba(124,58,237,.7);
+
+}
+
+/* Firefox */
+
+input[type="range"]::-moz-range-thumb{
+
+    width:22px;
+
+    height:22px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#7C3AED;
+
+    cursor:pointer;
+
+}
+
+/* ==========================
+   GENERATE BUTTON
+========================== */
+
+#generateBtn{
+
+    width:100%;
+
+    margin-top:35px;
+
+    padding:17px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    color:white;
+
+    background:linear-gradient(
+        135deg,
+        #7C3AED,
+        #2563EB
+    );
+
+    transition:.35s;
+
+    box-shadow:
+
+        0 10px 25px rgba(124,58,237,.35);
+
+}
+
+/* Icon spacing */
+
+#generateBtn i{
+
+    margin-right:8px;
+
+}
+
+/* Hover */
+
+#generateBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 15px 35px rgba(124,58,237,.6);
+
+}
+
+/* Click */
+
+#generateBtn:active{
+
+    transform:scale(.98);
+
+}
+
+/* ==========================
+   CUSTOM SCROLLBAR
+========================== */
+
+textarea::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+textarea::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+textarea::-webkit-scrollbar-thumb{
+
+    background:#7C3AED;
+
+    border-radius:30px;
+
+}
+
+textarea::-webkit-scrollbar-thumb:hover{
+
+    background:#8B5CF6;
+
+}
+
+/* ==========================
+   OUTPUT HEADER
+========================== */
+
+.output-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.output-header h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.status{
+
+    background:rgba(34,197,94,.18);
+
+    color:#86efac;
+
+    border:1px solid rgba(34,197,94,.4);
+
+    padding:8px 14px;
+
+    border-radius:50px;
+
+    font-size:.85rem;
+
+    font-weight:600;
+
+}
+
+/* ==========================
+   OUTPUT BOX
+========================== */
+
+#output{
+
+    width:100%;
+
+    height:450px;
+
+    overflow-y:auto;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#f8fafc;
+
+    line-height:1.8;
+
+    font-size:15px;
+
+    white-space:pre-wrap;
+
+    transition:.3s;
+
+}
+
+/* Output Scrollbar */
+
+#output::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+#output::-webkit-scrollbar-thumb{
+
+    background:#7C3AED;
+
+    border-radius:30px;
+
+}
+
+#output::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+/* ==========================
+   ACTION BUTTONS
+========================== */
+
+.action-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.action-buttons button{
+
+    flex:1;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    color:white;
+
+}
+
+.action-buttons i{
+
+    margin-right:8px;
+
+}
+
+/* Copy */
+
+#copyBtn{
+
+    background:#2563EB;
+
+}
+
+#copyBtn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* Download */
+
+#downloadBtn{
+
+    background:#059669;
+
+}
+
+#downloadBtn:hover{
+
+    background:#047857;
+
+}
+
+/* Clear */
+
+#clearBtn{
+
+    background:#dc2626;
+
+}
+
+#clearBtn:hover{
+
+    background:#b91c1c;
+
+}
+
+.action-buttons button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ==========================
+   FOOTER
+========================== */
+
+footer{
+
+    text-align:center;
+
+    margin-top:35px;
+
+    color:#94a3b8;
+
+    font-size:.9rem;
+
+}
+
+/* ==========================
+   FADE ANIMATION
+========================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.input-card,
+.output-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:1100px){
+
+    main{
+
+        grid-template-columns:1fr;
+
+    }
+
+    #output{
+
+        height:350px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    body{
+
+        padding:20px;
+
+    }
+
+    header h1{
+
+        font-size:2.2rem;
+
+    }
+
+    header p{
+
+        font-size:.95rem;
+
+    }
+
+    .input-card,
+    .output-card{
+
+        padding:22px;
+
+    }
+
+    .action-buttons{
+
+        flex-direction:column;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    header h1{
+
+        font-size:1.8rem;
+
+    }
+
+    #generateBtn{
+
+        font-size:15px;
+
+    }
+
+    #output{
+
+        height:280px;
+
+        font-size:14px;
+
+    }
+
+}

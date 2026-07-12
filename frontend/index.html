@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Content Studio</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Background Blur -->
+    <div class="bg-circle one"></div>
+    <div class="bg-circle two"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+
+        <header>
+
+            <h1>✨ AI Content Studio</h1>
+
+            <p>Create smarter. Write faster. Powered by Claude AI.</p>
+
+        </header>
+
+        <!-- Main Grid -->
+
+        <main>
+
+            <!-- LEFT PANEL -->
+
+            <section class="input-card">
+
+                <h2>Create Content</h2>
+
+                <!-- Content Type -->
+
+                <label>Content Type</label>
+
+                <select id="contentType">
+
+                    <option>Blog Post</option>
+
+                    <option>Instagram Caption</option>
+
+                    <option>Professional Email</option>
+
+                    <option>LinkedIn Post</option>
+
+                    <option>Advertisement</option>
+
+                    <option>YouTube Script</option>
+
+                    <option>Product Description</option>
+
+                    <option>Assignment Helper</option>
+
+                </select>
+
+                <!-- Topic -->
+
+                <label>Topic</label>
+
+                <textarea
+                    id="topic"
+                    rows="5"
+                    placeholder="Enter your topic..."></textarea>
+
+                <!-- Tone -->
+
+                <label>Tone</label>
+
+                <select id="tone">
+
+                    <option>Professional</option>
+
+                    <option>Friendly</option>
+
+                    <option>Creative</option>
+
+                    <option>Formal</option>
+
+                    <option>Casual</option>
+
+                    <option>Persuasive</option>
+
+                    <option>Inspirational</option>
+
+                </select>
+
+                <!-- Word Count -->
+
+                <label>
+
+                    Word Count
+
+                    <span id="wordValue">500</span>
+
+                </label>
+
+                <input
+                    type="range"
+                    id="wordCount"
+                    min="100"
+                    max="1000"
+                    value="500"
+                    step="50">
+
+                <!-- Generate -->
+
+                <button id="generateBtn">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    Generate Content
+
+                </button>
+
+            </section>
+
+            <!-- RIGHT PANEL -->
+
+            <section class="output-card">
+
+                <div class="output-header">
+
+                    <h2>
+
+                        <i class="fa-solid fa-robot"></i>
+
+                        Claude Response
+
+                    </h2>
+
+                    <span class="status">
+
+                        🟢 Connected
+
+                    </span>
+
+                </div>
+
+                <div id="output">
+
+                    Your AI-generated content will appear here...
+
+                </div>
+
+                <div class="action-buttons">
+
+                    <button id="copyBtn">
+
+                        <i class="fa-solid fa-copy"></i>
+
+                        Copy
+
+                    </button>
+
+                    <button id="downloadBtn">
+
+                        <i class="fa-solid fa-download"></i>
+
+                        Download
+
+                    </button>
+
+                    <button id="clearBtn">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer>
+
+            Built with ❤️ using FastAPI + Claude AI
+
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
