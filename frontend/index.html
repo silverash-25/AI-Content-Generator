@@ -2,45 +2,80 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AI Content Studio</title>
+    <title>AI Content Studio | Powered by Gemini</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Google Fonts -->
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 
 <body>
 
-    <!-- Background Blur -->
+    <!-- Animated Background -->
     <div class="bg-circle one"></div>
     <div class="bg-circle two"></div>
 
     <div class="container">
 
-        <!-- Header -->
+        <!-- ==========================
+             HEADER
+        =========================== -->
 
         <header>
 
-            <h1>✨ AI Content Studio</h1>
+            <h1>
+                ✨ AI Content Studio
+            </h1>
 
-            <p>Create smarter. Write faster. Powered by Claude AI.</p>
+            <p>
+                Create smarter. Write faster. Powered by Google Gemini 3.5 Flash.
+            </p>
 
         </header>
 
-        <!-- Main Grid -->
+        <!-- ==========================
+             HERO BADGES
+        =========================== -->
+
+        <div class="hero-badges">
+
+            <span>
+                <i class="fa-solid fa-bolt"></i>
+                Gemini 3.5 Flash
+            </span>
+
+            <span>
+                <i class="fa-solid fa-server"></i>
+                FastAPI Backend
+            </span>
+
+            <span>
+                <i class="fa-solid fa-code"></i>
+                HTML • CSS • JavaScript
+            </span>
+
+        </div>
+
+        <!-- ==========================
+             MAIN
+        =========================== -->
 
         <main>
 
-            <!-- LEFT PANEL -->
+            <!-- ==========================
+                 INPUT CARD
+            =========================== -->
 
             <section class="input-card">
 
@@ -77,7 +112,7 @@
                 <textarea
                     id="topic"
                     rows="5"
-                    placeholder="Enter your topic..."></textarea>
+                    placeholder="Describe what you'd like Gemini to generate..."></textarea>
 
                 <!-- Tone -->
 
@@ -119,7 +154,7 @@
                     value="500"
                     step="50">
 
-                <!-- Generate -->
+                <!-- Generate Button -->
 
                 <button id="generateBtn">
 
@@ -131,7 +166,9 @@
 
             </section>
 
-            <!-- RIGHT PANEL -->
+            <!-- ==========================
+                 OUTPUT CARD
+            =========================== -->
 
             <section class="output-card">
 
@@ -141,7 +178,7 @@
 
                         <i class="fa-solid fa-robot"></i>
 
-                        Claude Response
+                        Gemini Response
 
                     </h2>
 
@@ -153,11 +190,69 @@
 
                 </div>
 
+                <!-- AI Output -->
+
                 <div id="output">
 
                     Your AI-generated content will appear here...
 
                 </div>
+
+                <!-- Statistics -->
+
+                <div class="stats">
+
+                    <div class="stat-box">
+
+                        <span class="stat-title">
+
+                            Words
+
+                        </span>
+
+                        <h3 id="wordsGenerated">
+
+                            0
+
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-box">
+
+                        <span class="stat-title">
+
+                            Characters
+
+                        </span>
+
+                        <h3 id="charactersGenerated">
+
+                            0
+
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-box">
+
+                        <span class="stat-title">
+
+                            Generation Time
+
+                        </span>
+
+                        <h3 id="generationTime">
+
+                            0 s
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <!-- Action Buttons -->
 
                 <div class="action-buttons">
 
@@ -191,13 +286,23 @@
 
         </main>
 
+        <!-- ==========================
+             FOOTER
+        =========================== -->
+
         <footer>
 
-            Built with ❤️ using FastAPI + Claude AI
+            Built with ❤️ using FastAPI • Google Gemini 3.5 Flash • HTML • CSS • JavaScript
 
         </footer>
 
     </div>
+
+    <!-- Toast Notification -->
+
+    <div id="toast"></div>
+
+    <!-- JavaScript -->
 
     <script src="script.js"></script>
 

@@ -1,79 +1,272 @@
-// ===========================================
+// =========================================================
 // AI CONTENT STUDIO
-// Frontend JavaScript
-// ===========================================
+// Frontend Logic - Part 1
+// Built by Maria Khan
+// =========================================================
 
-// ---------- Backend URL ----------
+// =========================================================
+// BACKEND CONFIGURATION
+// =========================================================
+
 const API_BASE = "http://127.0.0.1:8000";
 
-// ---------- Elements ----------
+// =========================================================
+// DOM ELEMENTS
+// =========================================================
+
+// Input Elements
 const contentType = document.getElementById("contentType");
 const topic = document.getElementById("topic");
 const tone = document.getElementById("tone");
 const wordCount = document.getElementById("wordCount");
 const wordValue = document.getElementById("wordValue");
 
+// Buttons
 const generateBtn = document.getElementById("generateBtn");
-
-const output = document.getElementById("output");
-
 const copyBtn = document.getElementById("copyBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 const clearBtn = document.getElementById("clearBtn");
 
+// Output
+const output = document.getElementById("output");
+
+// Status Badge
 const statusBadge = document.querySelector(".status");
 
-// ---------- Word Count ----------
+// Statistics
+const wordsGenerated = document.getElementById("wordsGenerated");
+const charactersGenerated = document.getElementById("charactersGenerated");
+const generationTime = document.getElementById("generationTime");
+
+// Toast
+const toast = document.getElementById("toast");
+
+// =========================================================
+// GLOBAL VARIABLES
+// =========================================================
+
+let lastPrompt = null;
+let isGenerating = false;
+
+// =========================================================
+// WORD COUNT SLIDER
+// =========================================================
+
 wordValue.textContent = wordCount.value;
 
 wordCount.addEventListener("input", () => {
+
     wordValue.textContent = wordCount.value;
+
 });
 
-// ---------- Health Check ----------
-async function checkConnection() {
+// =========================================================
+// TOAST NOTIFICATION
+// =========================================================
 
-    try {
+function showToast(message, type = "info") {
 
-        const res = await fetch(`${API_BASE}/health`);
+    toast.textContent = message;
 
-        if (res.ok) {
+    toast.className = "";
 
-            statusBadge.textContent = "🟢 Connected";
+    toast.classList.add(type);
 
-            statusBadge.style.background =
-                "rgba(34,197,94,.18)";
+    toast.classList.add("show");
 
-        } else {
+    setTimeout(() => {
 
-            throw new Error();
+        toast.classList.remove("show");
 
-        }
+    }, 3000);
 
-    }
+}
 
-    catch {
+// =========================================================
+// OUTPUT HELPERS
+// =========================================================
 
-        statusBadge.textContent = "🔴 Offline";
+function clearOutput() {
 
-        statusBadge.style.background =
-            "rgba(239,68,68,.18)";
+    output.innerHTML =
+        "Your AI-generated content will appear here...";
+
+}
+
+function showThinkingAnimation() {
+
+    output.innerHTML = `
+        <div class="thinking">
+
+            <span class="brain">🧠</span>
+
+            Gemini is thinking
+
+            <span class="dots"></span>
+
+        </div>
+    `;
+
+}
+
+function removeThinkingAnimation() {
+
+    if (output.querySelector(".thinking")) {
+
+        output.innerHTML = "";
 
     }
 
 }
 
+// =========================================================
+// STATISTICS
+// =========================================================
+
+function updateStatistics(text, seconds) {
+
+    const trimmed = text.trim();
+
+    const wordCountValue = trimmed.length === 0
+        ? 0
+        : trimmed.split(/\s+/).length;
+
+    wordsGenerated.textContent =
+        wordCountValue;
+
+    charactersGenerated.textContent =
+        text.length;
+
+    generationTime.textContent =
+        seconds + " s";
+
+}
+
+function resetStatistics() {
+
+    wordsGenerated.textContent = "0";
+
+    charactersGenerated.textContent = "0";
+
+    generationTime.textContent = "0 s";
+
+}
+
+// =========================================================
+// CONNECTION CHECK
+// =========================================================
+
+async function checkConnection() {
+
+    try {
+
+        const response =
+            await fetch(`${API_BASE}/health`);
+
+        if (!response.ok) {
+
+            throw new Error();
+
+        }
+
+        statusBadge.innerHTML =
+            "🟢 Connected";
+
+        statusBadge.style.background =
+            "rgba(34,197,94,.18)";
+
+        statusBadge.style.color =
+            "#86efac";
+
+    }
+
+    catch {
+
+        statusBadge.innerHTML =
+            "🔴 Offline";
+
+        statusBadge.style.background =
+            "rgba(239,68,68,.18)";
+
+        statusBadge.style.color =
+            "#fecaca";
+
+    }
+
+}
+
+// =========================================================
+// BUTTON HELPERS
+// =========================================================
+
+function disableGenerateButton() {
+
+    isGenerating = true;
+
+    generateBtn.disabled = true;
+
+    generateBtn.innerHTML =
+        `<i class="fa-solid fa-spinner fa-spin"></i>
+         Generating...`;
+
+}
+
+function enableGenerateButton() {
+
+    isGenerating = false;
+
+    generateBtn.disabled = false;
+
+    generateBtn.innerHTML =
+        `<i class="fa-solid fa-wand-magic-sparkles"></i>
+         Generate Content`;
+
+}
+
+// =========================================================
+// RESET APP
+// =========================================================
+
+function resetApplication() {
+
+    clearOutput();
+
+    resetStatistics();
+
+}
+
+// =========================================================
+// INITIALIZATION
+// =========================================================
+
 checkConnection();
 
-// ---------- Generate ----------
+resetStatistics();
+
+// =========================================================
+// GENERATE CONTENT
+// =========================================================
 
 generateBtn.addEventListener("click", generateContent);
 
 async function generateContent() {
 
+    // Prevent duplicate requests
+
+    if (isGenerating) {
+
+        return;
+
+    }
+
+    // Validate Topic
+
     if (topic.value.trim() === "") {
 
-        alert("Please enter a topic.");
+        showToast(
+            "⚠ Please enter a topic.",
+            "warning"
+        );
 
         topic.focus();
 
@@ -81,19 +274,36 @@ async function generateContent() {
 
     }
 
-    output.textContent = "";
+    // Save last prompt
 
-    generateBtn.disabled = true;
+    lastPrompt = {
 
-    generateBtn.innerHTML =
-        "⏳ Generating...";
+        topic: topic.value,
 
-    const start = performance.now();
+        content_type: contentType.value,
+
+        tone: tone.value,
+
+        word_count: Number(wordCount.value)
+
+    };
+
+    disableGenerateButton();
+
+    resetStatistics();
+
+    showThinkingAnimation();
+
+    const startTime = performance.now();
+
+    let generatedText = "";
 
     try {
 
         const response = await fetch(
+
             `${API_BASE}/generate-stream`,
+
             {
 
                 method: "POST",
@@ -104,98 +314,191 @@ async function generateContent() {
 
                 },
 
-                body: JSON.stringify({
-
-                    topic: topic.value,
-
-                    content_type: contentType.value,
-
-                    tone: tone.value,
-
-                    word_count: Number(wordCount.value)
-
-                })
+                body: JSON.stringify(lastPrompt)
 
             }
+
         );
 
         if (!response.ok) {
 
-            throw new Error("Server Error");
+            throw new Error(
+                "Unable to connect to FastAPI."
+            );
 
         }
 
-        const reader = response.body.getReader();
+        // Remove thinking animation
 
-        const decoder = new TextDecoder();
+        removeThinkingAnimation();
+
+        const reader =
+            response.body.getReader();
+
+        const decoder =
+            new TextDecoder();
 
         while (true) {
 
             const { done, value } =
                 await reader.read();
 
-            if (done) break;
+            if (done) {
+
+                break;
+
+            }
 
             const chunk =
                 decoder.decode(value);
 
-            output.textContent += chunk;
+            generatedText += chunk;
+
+            output.innerHTML =
+                generatedText +
+                `<span class="cursor">|</span>`;
 
             output.scrollTop =
                 output.scrollHeight;
 
+            // Live Statistics
+
+            const currentSeconds =
+                (
+                    (performance.now() - startTime)
+                    / 1000
+                ).toFixed(2);
+
+            updateStatistics(
+
+                generatedText,
+
+                currentSeconds
+
+            );
+
         }
 
-        const end = performance.now();
+        // Remove Cursor
 
-        console.log(
-            `Generated in ${(
-                (end - start) / 1000
-            ).toFixed(2)} sec`
+        output.textContent =
+            generatedText;
+
+            saveOutput(generatedText);
+
+        const totalSeconds =
+            (
+                (performance.now() - startTime)
+                / 1000
+            ).toFixed(2);
+
+        updateStatistics(
+
+            generatedText,
+
+            totalSeconds
+
+        );
+
+        showToast(
+
+            "✨ Content generated successfully!",
+
+            "success"
+
         );
 
     }
 
-    catch (err) {
+    catch (error) {
 
-        console.error(err);
+        console.error(error);
 
         output.innerHTML =
-            "❌ Failed to generate content.<br><br>Check that FastAPI is running.";
+
+        `
+        <div style="padding:25px;text-align:center;">
+
+            <h3 style="color:#ef4444;">
+                Generation Failed
+            </h3>
+
+            <p style="margin-top:12px;line-height:1.7;">
+                Unable to generate content.
+
+                <br><br>
+
+                Make sure:
+
+                <br>
+
+                ✅ FastAPI is running
+
+                <br>
+
+                ✅ Gemini API Key is valid
+
+                <br>
+
+                ✅ Internet connection is available
+
+            </p>
+
+        </div>
+        `;
+
+        resetStatistics();
+
+        showToast(
+
+            "❌ Failed to generate content.",
+
+            "error"
+
+        );
 
     }
 
     finally {
 
-        generateBtn.disabled = false;
-
-        generateBtn.innerHTML =
-            '<i class="fa-solid fa-wand-magic-sparkles"></i> Generate Content';
+        enableGenerateButton();
 
     }
 
 }
 
-// ---------- Copy ----------
+// =========================================================
+// COPY BUTTON
+// =========================================================
 
 copyBtn.addEventListener("click", async () => {
 
-    if (output.textContent.trim() === "")
+    const text = output.textContent.trim();
+
+    if (
+        text === "" ||
+        text === "Your AI-generated content will appear here..."
+    ) {
+
+        showToast("Nothing to copy.", "warning");
         return;
+
+    }
 
     try {
 
-        await navigator.clipboard.writeText(
-            output.textContent
-        );
+        await navigator.clipboard.writeText(text);
 
-        const old = copyBtn.innerHTML;
+        const oldText = copyBtn.innerHTML;
 
-        copyBtn.innerHTML = "✅ Copied";
+        copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> Copied';
+
+        showToast("Copied to clipboard!", "success");
 
         setTimeout(() => {
 
-            copyBtn.innerHTML = old;
+            copyBtn.innerHTML = oldText;
 
         }, 1800);
 
@@ -203,64 +506,425 @@ copyBtn.addEventListener("click", async () => {
 
     catch {
 
-        alert("Unable to copy.");
+        showToast("Unable to copy.", "error");
 
     }
 
 });
 
-// ---------- Download ----------
+
+// =========================================================
+// DOWNLOAD BUTTON
+// =========================================================
 
 downloadBtn.addEventListener("click", () => {
 
-    if (output.textContent.trim() === "")
+    const text = output.textContent.trim();
+
+    if (
+        text === "" ||
+        text === "Your AI-generated content will appear here..."
+    ) {
+
+        showToast("Nothing to download.", "warning");
         return;
 
+    }
+
     const blob = new Blob(
-
-        [output.textContent],
-
+        [text],
         { type: "text/plain" }
-
     );
 
     const url =
-        window.URL.createObjectURL(blob);
+        URL.createObjectURL(blob);
 
-    const a =
+    const link =
         document.createElement("a");
 
-    a.href = url;
+    const filename =
+        topic.value.trim() === ""
+            ? "generated-content.txt"
+            : `${topic.value
+                .trim()
+                .replace(/[^\w]/g, "_")
+                .substring(0, 30)}.txt`;
 
-    a.download = "generated-content.txt";
+    link.href = url;
+    link.download = filename;
 
-    document.body.appendChild(a);
+    document.body.appendChild(link);
 
-    a.click();
+    link.click();
 
-    a.remove();
+    link.remove();
 
-    window.URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
+
+    showToast("Download started!", "success");
 
 });
 
-// ---------- Clear ----------
+
+// =========================================================
+// CLEAR BUTTON
+// =========================================================
 
 clearBtn.addEventListener("click", () => {
 
     output.textContent =
         "Your AI-generated content will appear here...";
 
+    resetStatistics();
+
+    showToast("Workspace cleared.", "success");
+
 });
 
-// ---------- Ctrl + Enter ----------
 
-topic.addEventListener("keydown", (e) => {
+// =========================================================
+// CTRL + ENTER
+// =========================================================
 
-    if (e.ctrlKey && e.key === "Enter") {
+topic.addEventListener("keydown", (event) => {
+
+    if (
+        event.ctrlKey &&
+        event.key === "Enter"
+    ) {
 
         generateContent();
 
     }
 
 });
+
+
+// =========================================================
+// AUTO SAVE LAST OUTPUT
+// =========================================================
+
+function saveOutput(text) {
+
+    localStorage.setItem(
+        "lastGeneratedContent",
+        text
+    );
+
+}
+
+function loadSavedOutput() {
+
+    const saved =
+        localStorage.getItem(
+            "lastGeneratedContent"
+        );
+
+    if (!saved) return;
+
+    output.textContent = saved;
+
+    updateStatistics(
+        saved,
+        0
+    );
+
+}
+
+
+// =========================================================
+// AUTO SAVE AFTER GENERATION
+// =========================================================
+
+function saveOutput(text) {
+
+    if (text.trim() !== "") {
+
+        localStorage.setItem(
+            "lastGeneratedContent",
+            text
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// PAGE LOAD
+// =========================================================
+
+window.addEventListener("load", () => {
+
+    loadSavedOutput();
+
+});
+
+
+// =========================================================
+// ESC TO CLEAR
+// =========================================================
+
+document.addEventListener("keydown", (event) => {
+
+    if (
+        event.key === "Escape" &&
+        !isGenerating
+    ) {
+
+        clearBtn.click();
+
+    }
+
+});
+
+
+// =========================================================
+// AUTO RESIZE TEXTAREA
+// =========================================================
+
+topic.addEventListener("input", () => {
+
+    topic.style.height = "auto";
+
+    topic.style.height =
+        topic.scrollHeight + "px";
+
+});
+
+
+// =========================================================
+// PREVENT EMPTY SPACE INPUT
+// =========================================================
+
+topic.addEventListener("blur", () => {
+
+    topic.value =
+        topic.value.trim();
+
+});
+
+
+// =========================================================
+// ENTER ANIMATION
+// =========================================================
+
+document.body.classList.add("loaded");
+
+// =========================================================
+// REGENERATE LAST PROMPT
+// =========================================================
+
+document.addEventListener("keydown", (event) => {
+
+    if (event.key === "F5" && lastPrompt && !isGenerating) {
+
+        event.preventDefault();
+
+        generateContent();
+
+    }
+
+});
+
+
+// =========================================================
+// PROMPT HISTORY
+// =========================================================
+
+function savePromptHistory() {
+
+    if (!lastPrompt) return;
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("promptHistory")
+        ) || [];
+
+    history.unshift(lastPrompt);
+
+    history = history.slice(0, 10);
+
+    localStorage.setItem(
+        "promptHistory",
+        JSON.stringify(history)
+    );
+
+}
+
+function getPromptHistory() {
+
+    return JSON.parse(
+
+        localStorage.getItem("promptHistory")
+
+    ) || [];
+
+}
+
+
+// =========================================================
+// SAVE HISTORY AFTER SUCCESS
+// =========================================================
+
+const oldGenerate = generateContent;
+
+generateContent = async function () {
+
+    await oldGenerate();
+
+    savePromptHistory();
+
+};
+
+
+// =========================================================
+// CHARACTER COUNTER
+// =========================================================
+
+topic.addEventListener("input", () => {
+
+    const max = 1000;
+
+    if (topic.value.length > max) {
+
+        topic.value =
+            topic.value.substring(0, max);
+
+        showToast(
+
+            "Maximum 1000 characters.",
+
+            "warning"
+
+        );
+
+    }
+
+});
+
+
+// =========================================================
+// CONNECTION CHECK EVERY 30 SECONDS
+// =========================================================
+
+setInterval(() => {
+
+    checkConnection();
+
+}, 30000);
+
+
+// =========================================================
+// FOCUS INPUT WHEN PAGE LOADS
+// =========================================================
+
+window.addEventListener("load", () => {
+
+    topic.focus();
+
+});
+
+
+// =========================================================
+// RANDOM PLACEHOLDER IDEAS
+// =========================================================
+
+const topicIdeas = [
+
+    "Benefits of Artificial Intelligence",
+
+    "Future of Cybersecurity",
+
+    "Blockchain in Banking",
+
+    "Instagram Caption for Coffee",
+
+    "Travel Blog about Dubai",
+
+    "Professional Leave Email",
+
+    "LinkedIn Career Post",
+
+    "Startup Product Description",
+
+    "Healthy Lifestyle Tips",
+
+    "Python Programming Guide"
+
+];
+
+window.addEventListener("load", () => {
+
+    topic.placeholder =
+
+        topicIdeas[
+
+            Math.floor(
+
+                Math.random()
+
+                * topicIdeas.length
+
+            )
+
+        ];
+
+});
+
+
+// =========================================================
+// SHOW GENERATION TIME IN CONSOLE
+// =========================================================
+
+window.addEventListener("beforeunload", () => {
+
+    console.log(
+
+        "Thanks for using AI Content Studio."
+
+    );
+
+});
+
+
+// =========================================================
+// SMALL OUTPUT FADE EFFECT
+// =========================================================
+
+const observer = new MutationObserver(() => {
+
+    output.style.opacity = ".6";
+
+    setTimeout(() => {
+
+        output.style.opacity = "1";
+
+    }, 150);
+
+});
+
+observer.observe(output, {
+
+    childList: true,
+
+    subtree: true,
+
+    characterData: true
+
+});
+
+
+// =========================================================
+// END
+// =========================================================
+
+console.log(
+
+`=========================================
+ AI CONTENT STUDIO
+ Powered by Gemini 3.5
+ Built with HTML • CSS • JavaScript
+ Backend: FastAPI
+=========================================`
+);

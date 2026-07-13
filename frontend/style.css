@@ -787,3 +787,205 @@ footer{
     }
 
 }
+
+/* ==========================
+   STATS PANEL
+========================== */
+
+.stats{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.stat-box{
+
+    flex:1;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:15px;
+
+    padding:18px;
+
+    text-align:center;
+
+    transition:.3s;
+
+}
+
+.stat-box:hover{
+
+    transform:translateY(-4px);
+
+    background:rgba(124,58,237,.15);
+
+}
+
+.stat-title{
+
+    display:block;
+
+    color:#94a3b8;
+
+    font-size:.8rem;
+
+    margin-bottom:10px;
+
+}
+
+.stat-box h3{
+
+    font-size:1.4rem;
+
+    color:#60a5fa;
+
+}
+
+/* ==========================
+   TOAST NOTIFICATIONS
+========================== */
+
+#toast{
+
+    position:fixed;
+
+    top:30px;
+
+    right:30px;
+
+    min-width:280px;
+
+    max-width:360px;
+
+    padding:18px 24px;
+
+    border-radius:16px;
+
+    backdrop-filter:blur(20px);
+
+    background:rgba(15,23,42,.92);
+
+    color:white;
+
+    font-weight:500;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+    transform:translateX(450px);
+
+    transition:.45s;
+
+    z-index:9999;
+
+}
+
+#toast.show{
+
+    transform:translateX(0);
+
+}
+
+#toast.success{
+
+    border-left:5px solid #10B981;
+
+}
+
+#toast.error{
+
+    border-left:5px solid #EF4444;
+
+}
+
+#toast.warning{
+
+    border-left:5px solid #F59E0B;
+
+}
+
+#toast.info{
+
+    border-left:5px solid #3B82F6;
+
+}
+
+/* ==========================
+   THINKING ANIMATION
+========================== */
+
+.thinking{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:18px;
+
+    color:#cbd5e1;
+
+    margin-top:10px;
+
+}
+
+.brain{
+
+    font-size:28px;
+
+}
+
+/* Animated Dots */
+
+.dots::after{
+
+    content:"";
+
+    animation:dots 1.5s infinite;
+
+}
+
+@keyframes dots{
+
+    0%{content:"";}
+
+    25%{content:".";}
+
+    50%{content:"..";}
+
+    75%{content:"...";}
+
+    100%{content:"";}
+
+}
+
+/* Typing Cursor */
+
+.cursor{
+
+    display:inline-block;
+
+    margin-left:2px;
+
+    color:#60a5fa;
+
+    animation:blink .9s infinite;
+
+}
+
+@keyframes blink{
+
+    50%{
+
+        opacity:0;
+
+    }
+
+}
